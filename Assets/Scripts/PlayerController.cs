@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     public Transform firePoint;
     public float timeBetweenShots;
 
+    [HideInInspector]
+    public bool canMove = true;
+
     private void Awake()
     {
         instance = this;
@@ -41,6 +44,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!canMove)
+        {
+            myRB.velocity = Vector2.zero;
+            anim.SetBool("isMoving", false);
+            return;
+        }
+
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
         moveInput.Normalize();

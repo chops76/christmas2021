@@ -35,28 +35,22 @@ public class Room : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void RoomEntered()
     {
-        if(other.tag == "Player")
+        CameraController.instance.SetTarget(transform);
+        if (closeOnEnter && enemies.Count > 0)
         {
-            CameraController.instance.SetTarget(transform);
-            if (closeOnEnter && enemies.Count > 0)
+            foreach (GameObject door in doors)
             {
-                foreach (GameObject door in doors)
-                {
-                    door.SetActive(true);
-                }
+                door.SetActive(true);
             }
-
-            roomActive = true;
         }
+
+        roomActive = true;
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    public void RoomExited()
     {
-        if(other.tag == "Player")
-        {
-            roomActive = false;
-        }
+        roomActive = false;
     }
 }
