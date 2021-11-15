@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(LevelManager.instance.isPaused)
+        {
+            return;
+        }
         if(!canMove)
         {
             myRB.velocity = Vector2.zero;

@@ -9,6 +9,9 @@ public class LevelManager : MonoBehaviour
     public float waitToLoadNext = 4.0f;
     public string nextLevel;
 
+    [HideInInspector]
+    public bool isPaused = false;
+
     private void Awake()
     {
         instance = this;
@@ -17,13 +20,16 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Time.timeScale = 1.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseToggle();
+        }
     }
 
     public IEnumerator LevelEnd()
@@ -33,5 +39,12 @@ public class LevelManager : MonoBehaviour
         AudioManager.instance.PlayLevelWin();
         yield return new WaitForSeconds(waitToLoadNext);
         SceneManager.LoadScene(nextLevel);
+    }
+
+    public void PauseToggle()
+    {
+        isPaused = !isPaused;
+        UIController.instance.pauseMenu.SetActive(isPaused);
+        Time.timeScale = isPaused ? 0f : 1f;
     }
 }

@@ -13,6 +13,7 @@ public class UIController : MonoBehaviour
     public float fadeSpeed;
     public string newGameScene;
     public string mainMenuScene;
+    public GameObject pauseMenu;
 
     private bool fadeToBlack;
     private bool fadeOutBlack;
@@ -70,5 +71,10 @@ public class UIController : MonoBehaviour
     public void NewGame()
     {
         SceneManager.LoadScene(newGameScene);
+    }
+
+    public void Resume()
+    {
+        LevelManager.instance.PauseToggle();
     }
 }
