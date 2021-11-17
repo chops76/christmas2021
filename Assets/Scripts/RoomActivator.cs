@@ -6,10 +6,15 @@ public class RoomActivator : MonoBehaviour
 {
     private Room parentRoom;
 
+    private void Awake()
+    {
+        parentRoom = transform.parent.gameObject.GetComponent<Room>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        parentRoom = transform.parent.gameObject.GetComponent<Room>();
+       
     }
 
     // Update is called once per frame

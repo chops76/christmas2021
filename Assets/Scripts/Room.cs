@@ -6,11 +6,10 @@ using UnityEngine;
 public class Room : MonoBehaviour
 {
     public bool closeOnEnter;
-    public bool openWhenEnemiesCleared;
     public GameObject[] doors;
-    public List<GameObject> enemies = new List<GameObject>();
 
-    private bool roomActive;
+    [HideInInspector]
+    public bool roomActive;
 
     // Start is called before the first frame update
     void Start()
@@ -21,24 +20,21 @@ public class Room : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(roomActive && enemies.Count > 0 && openWhenEnemiesCleared)
-        {
-            enemies = enemies.Where(x => x != null).ToList();
-        }
 
-        if(enemies.Count == 0)
+    }
+
+    public void OpenDoors()
+    {
+        foreach (GameObject door in doors)
         {
-            foreach (GameObject door in doors)
-            {
-                door.SetActive(false);
-            }
+            door.SetActive(false);
         }
     }
 
     public void RoomEntered()
     {
         CameraController.instance.SetTarget(transform);
-        if (closeOnEnter && enemies.Count > 0)
+        if (closeOnEnter)
         {
             foreach (GameObject door in doors)
             {
