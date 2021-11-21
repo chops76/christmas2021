@@ -553,7 +553,13 @@ MonoBehaviour:
   firePoint: {fileID: 4519585590964941674}
   fireRate: 1.5
   body: {fileID: 4519585590409579786}
+  shouldChase: 1
   rangeToChasePlayer: 7
+  shouldRunAway: 0
+  rangeToRunAway: 0
+  shouldWander: 0
+  wanderLength: 0
+  pauseLength: 0
   fireRange: 10
 --- !u!95 &4519585592078312375
 Animator:

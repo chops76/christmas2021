@@ -18,6 +18,7 @@ public class DamagePlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Trigger");
         if (other.tag == "Player")
         {
             PlayerHealthController.instance.DamagePlayer();
@@ -34,6 +35,7 @@ public class DamagePlayer : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        Debug.Log("Collision");
         if (other.gameObject.tag == "Player")
         {
             PlayerHealthController.instance.DamagePlayer();
