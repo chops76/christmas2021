@@ -230,6 +230,12 @@ MonoBehaviour:
   shouldWander: 1
   wanderLength: 0.25
   pauseLength: 1
+  shouldPatrol: 0
+  patrolPoints: []
+  shouldDrop: 1
+  dropItems:
+  - {fileID: 754190791820973155, guid: ba382ef45319d3b4fbfa156ff96d9c5c, type: 3}
+  itemDropPercent: 40
   fireRange: 8
 --- !u!95 &5524139070412255147
 Animator:

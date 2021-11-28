@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
 {
     public Slider healthSider;
     public Text healthText;
+    public Text coinText;
     public GameObject deathScreen;
     public Image fadeScreen;
     public float fadeSpeed;

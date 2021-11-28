@@ -29,6 +29,10 @@ public class EnemyController : MonoBehaviour
     [Header("Patrol")]
     public bool shouldPatrol;
     public Transform[] patrolPoints;
+    [Header("Droppables")]
+    public bool shouldDrop;
+    public GameObject[] dropItems;
+    public int itemDropPercent;
 
     private float wanderCounter;
     private float pauseCounter;
@@ -126,6 +130,11 @@ public class EnemyController : MonoBehaviour
             Object.Destroy(gameObject);
             Quaternion rotation = Quaternion.Euler(0, 0, 90 * Random.Range(0, 4));
             Instantiate(deathSplatters[Random.Range(0,deathSplatters.Length)], transform.position, rotation);
+            if (shouldDrop && Random.Range(0, 100) < itemDropPercent)
+            {
+                int randomItem = Random.Range(0, dropItems.Length);
+                Instantiate(dropItems[randomItem], transform.position, transform.rotation);
+            }
         } else
         {
             AudioManager.instance.PlaySFX(AudioManager.SFX.EnemyHurt);

@@ -226,6 +226,15 @@ MonoBehaviour:
   rangeToChasePlayer: 6
   shouldRunAway: 1
   rangeToRunAway: 8
+  shouldWander: 0
+  wanderLength: 0
+  pauseLength: 0
+  shouldPatrol: 0
+  patrolPoints: []
+  shouldDrop: 1
+  dropItems:
+  - {fileID: 754190791820973155, guid: ba382ef45319d3b4fbfa156ff96d9c5c, type: 3}
+  itemDropPercent: 40
   fireRange: 20
 --- !u!95 &1265120203543078363
 Animator:

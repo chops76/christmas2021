@@ -9,6 +9,8 @@ public class LevelManager : MonoBehaviour
     public float waitToLoadNext = 4.0f;
     public string nextLevel;
 
+    public int numCoins;
+
     [HideInInspector]
     public bool isPaused = false;
 
@@ -46,5 +48,17 @@ public class LevelManager : MonoBehaviour
         isPaused = !isPaused;
         UIController.instance.pauseMenu.SetActive(isPaused);
         Time.timeScale = isPaused ? 0f : 1f;
+    }
+
+    public void PickupCoins(int amount)
+    {
+        numCoins += amount;
+        UIController.instance.coinText.text = numCoins.ToString();
+    }
+
+    public void SpendCoins(int amount)
+    {
+        numCoins = Mathf.Max(amount, 0);
+        UIController.instance.coinText.text = numCoins.ToString();
     }
 }
