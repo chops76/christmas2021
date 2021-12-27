@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public float dashInvinc = .5f;
     private Vector2 moveInput;
     private Camera mainCamera;
-    private float shotCounter;
     private float activeMoveSpeed;
     private float dashCounter;
     private float dashCoolCounter;
@@ -21,9 +20,9 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D myRB;
     public Transform gunArm;
     public Animator anim;
-    public GameObject bulletPrefab;
-    public Transform firePoint;
-    public float timeBetweenShots;
+
+    public List<GunController> availableGuns;
+    private int currentGun;
 
     [HideInInspector]
     public bool canMove = true;
@@ -39,11 +38,14 @@ public class PlayerController : MonoBehaviour
         mainCamera = Camera.main;
         activeMoveSpeed = moveSpeed;
         dashCoolCounter = 0;
+
+        updateWeaponUI();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Updating player");
         if(LevelManager.instance.isPaused)
         {
             return;
@@ -80,22 +82,9 @@ public class PlayerController : MonoBehaviour
         float angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
         gunArm.rotation = Quaternion.Euler(0, 0, angle);
 
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            AudioManager.instance.PlaySFX(AudioManager.SFX.Shoot1);
-            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            shotCounter = timeBetweenShots;
-        }
-
-        if (Input.GetButton("Fire1"))
-        {
-            shotCounter -= Time.deltaTime;
-            if (shotCounter <= 0)
-            {
-                AudioManager.instance.PlaySFX(AudioManager.SFX.Shoot1);
-                shotCounter = timeBetweenShots;
-                Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            }
+            switchGun((currentGun + 1) % availableGuns.Count);
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && dashCoolCounter <= 0 && dashCounter <= 0)
@@ -140,5 +129,23 @@ public class PlayerController : MonoBehaviour
             newColor.a = alpha;
             child.color = newColor;
         }
+    }
+
+    void updateWeaponUI()
+    {
+        UIController.instance.currentGun.sprite = availableGuns[currentGun].gunUI;
+        UIController.instance.currentGunText.text = availableGuns[currentGun].weaponName;
+    }
+
+    public void switchGun(int newGun)
+    {
+        foreach (GunController gun in availableGuns)
+        {
+            gun.gameObject.SetActive(false);
+        }
+        currentGun = newGun;
+        availableGuns[currentGun].gameObject.SetActive(true);
+
+        updateWeaponUI();
     }
 }

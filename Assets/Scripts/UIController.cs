@@ -15,6 +15,11 @@ public class UIController : MonoBehaviour
     public string newGameScene;
     public string mainMenuScene;
     public GameObject pauseMenu;
+    public GameObject mapDisplay;
+    public GameObject bigMapText;
+
+    public Image currentGun;
+    public Text currentGunText;
 
     private bool fadeToBlack;
     private bool fadeOutBlack;

@@ -78,6 +78,13 @@ public class PlayerHealthController : MonoBehaviour
         currentHealth = Math.Min(currentHealth + amount, maxHealth);
         UpdateHealthUI();
     }
+
+    public void increaseMaxHealth(int amount)
+    {
+        maxHealth += amount;
+        currentHealth = maxHealth;
+        UpdateHealthUI();
+    }
 }
 
 

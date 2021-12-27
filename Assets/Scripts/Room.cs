@@ -7,6 +7,7 @@ public class Room : MonoBehaviour
 {
     public bool closeOnEnter;
     public GameObject[] doors;
+    public GameObject hider;
 
     [HideInInspector]
     public bool roomActive;
@@ -33,6 +34,7 @@ public class Room : MonoBehaviour
 
     public void RoomEntered()
     {
+        hider.SetActive(false);
         CameraController.instance.SetTarget(transform);
         if (closeOnEnter)
         {

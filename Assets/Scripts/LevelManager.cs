@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
 
     public void SpendCoins(int amount)
     {
-        numCoins = Mathf.Max(amount, 0);
+        numCoins = Mathf.Max(numCoins - amount, 0);
         UIController.instance.coinText.text = numCoins.ToString();
     }
 }

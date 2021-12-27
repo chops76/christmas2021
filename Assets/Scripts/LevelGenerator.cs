@@ -8,6 +8,10 @@ public class LevelGenerator : MonoBehaviour
     public int distanceToEnd;
     public Color startColor;
     public Color endColor;
+    public Color shopColor;
+    public bool includeShop;
+    public int minDistToShop;
+    public int maxDistToShop;
 
     public Transform generatorPoint;
     public float xOffset = 18;
@@ -18,6 +22,7 @@ public class LevelGenerator : MonoBehaviour
 
     public RoomCenter startCenter;
     public RoomCenter endCenter;
+    public RoomCenter shopCenter;
     public RoomCenter[] roomCenters;
 
     public enum Direction
@@ -29,6 +34,7 @@ public class LevelGenerator : MonoBehaviour
     }
     private Direction nextDirection;
     private GameObject endRoom;
+    private GameObject shopRoom;
     private List<GameObject> layoutRoomObjects = new List<GameObject>();
     private List<GameObject> generatedOutlines = new List<GameObject>();
 
@@ -64,7 +70,15 @@ public class LevelGenerator : MonoBehaviour
         }
         CreateRoomOutline(endRoom.transform.position);
 
-        foreach(GameObject room in generatedOutlines)
+        if (includeShop)
+        {
+            int shopSelector = Random.Range(minDistToShop, maxDistToShop + 1);
+            shopRoom = layoutRoomObjects[shopSelector];
+            layoutRoomObjects.RemoveAt(shopSelector);
+            shopRoom.GetComponent<SpriteRenderer>().color = shopColor;
+        }
+
+        foreach (GameObject room in generatedOutlines)
         {
             RoomCenter newCenter;
             if (room.transform.position == Vector3.zero)
@@ -74,6 +88,10 @@ public class LevelGenerator : MonoBehaviour
             else if (room.transform.position == endRoom.transform.position)
             {
                 newCenter = Instantiate(endCenter, room.transform.position, transform.rotation);
+            }
+            else if (includeShop && room.transform.position == shopRoom.transform.position)
+            {
+                newCenter = Instantiate(shopCenter, room.transform.position, transform.rotation);
             }
             else
             {
