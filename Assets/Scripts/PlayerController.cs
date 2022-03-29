@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     public float dashCoolDown = 1f;
     public float dashInvinc = .5f;
     private Vector2 moveInput;
-    private Camera mainCamera;
     private float activeMoveSpeed;
     private float dashCounter;
     private float dashCoolCounter;
@@ -22,7 +21,8 @@ public class PlayerController : MonoBehaviour
     public Animator anim;
 
     public List<GunController> availableGuns;
-    private int currentGun;
+    [HideInInspector]
+    public int currentGun;
 
     [HideInInspector]
     public bool canMove = true;
@@ -30,22 +30,19 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        mainCamera = Camera.main;
         activeMoveSpeed = moveSpeed;
         dashCoolCounter = 0;
-
-        updateWeaponUI();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Updating player");
         if(LevelManager.instance.isPaused)
         {
             return;
@@ -63,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
         myRB.velocity = moveInput * activeMoveSpeed;
         Vector3 mousePos = Input.mousePosition;
-        Vector3 screenPoint = mainCamera.WorldToScreenPoint(transform.localPosition);
+        Vector3 screenPoint = CameraController.instance.mainCamera.WorldToScreenPoint(transform.localPosition);
         Vector2 offset = new Vector2(mousePos.x - screenPoint.x, mousePos.y - screenPoint.y);
         if ( offset.x < 0 )
         {
@@ -131,12 +128,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void updateWeaponUI()
-    {
-        UIController.instance.currentGun.sprite = availableGuns[currentGun].gunUI;
-        UIController.instance.currentGunText.text = availableGuns[currentGun].weaponName;
-    }
-
     public void switchGun(int newGun)
     {
         foreach (GunController gun in availableGuns)
@@ -146,6 +137,28 @@ public class PlayerController : MonoBehaviour
         currentGun = newGun;
         availableGuns[currentGun].gameObject.SetActive(true);
 
-        updateWeaponUI();
+        UIController.instance.updateWeaponUI();
+    }
+
+    public void pickupGun(GunController newGun)
+    {
+        bool already_unlocked = false;
+        foreach (GunController gun in availableGuns)
+        {
+            if (gun.weaponName == newGun.weaponName)
+            {
+                already_unlocked = true;
+            }
+        }
+        if (!already_unlocked)
+        {
+            GunController this_gun = Instantiate(newGun);
+            this_gun.transform.parent = gunArm;
+            this_gun.transform.position = gunArm.transform.position;
+            this_gun.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            this_gun.transform.localScale = Vector3.one;
+            availableGuns.Add(this_gun);
+            switchGun(availableGuns.Count - 1);
+        }
     }
 }

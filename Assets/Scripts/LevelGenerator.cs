@@ -9,9 +9,13 @@ public class LevelGenerator : MonoBehaviour
     public Color startColor;
     public Color endColor;
     public Color shopColor;
+    public Color gunRoomColor;
     public bool includeShop;
     public int minDistToShop;
     public int maxDistToShop;
+    public bool includeGunRoom;
+    public int minDistToGunRoom;
+    public int maxDistToGunRoom;
 
     public Transform generatorPoint;
     public float xOffset = 18;
@@ -23,6 +27,7 @@ public class LevelGenerator : MonoBehaviour
     public RoomCenter startCenter;
     public RoomCenter endCenter;
     public RoomCenter shopCenter;
+    public RoomCenter gunRoomCenter;
     public RoomCenter[] roomCenters;
 
     public enum Direction
@@ -35,6 +40,7 @@ public class LevelGenerator : MonoBehaviour
     private Direction nextDirection;
     private GameObject endRoom;
     private GameObject shopRoom;
+    private GameObject gunRoom;
     private List<GameObject> layoutRoomObjects = new List<GameObject>();
     private List<GameObject> generatedOutlines = new List<GameObject>();
 
@@ -70,12 +76,24 @@ public class LevelGenerator : MonoBehaviour
         }
         CreateRoomOutline(endRoom.transform.position);
 
+        int shopSelector = -1;
         if (includeShop)
         {
-            int shopSelector = Random.Range(minDistToShop, maxDistToShop + 1);
+            shopSelector = Random.Range(minDistToShop, maxDistToShop + 1);
             shopRoom = layoutRoomObjects[shopSelector];
-            layoutRoomObjects.RemoveAt(shopSelector);
+            layoutRoomObjects.Remove(shopRoom);
             shopRoom.GetComponent<SpriteRenderer>().color = shopColor;
+        }
+        if (includeGunRoom)
+        {
+            int roomSelector = Random.Range(minDistToGunRoom, maxDistToGunRoom + 1);
+            while (roomSelector == shopSelector)
+            {
+                roomSelector = Random.Range(minDistToGunRoom, maxDistToGunRoom + 1);
+            }
+            gunRoom = layoutRoomObjects[roomSelector];
+            layoutRoomObjects.Remove(gunRoom);
+            gunRoom.GetComponent<SpriteRenderer>().color = gunRoomColor;
         }
 
         foreach (GameObject room in generatedOutlines)
@@ -92,6 +110,10 @@ public class LevelGenerator : MonoBehaviour
             else if (includeShop && room.transform.position == shopRoom.transform.position)
             {
                 newCenter = Instantiate(shopCenter, room.transform.position, transform.rotation);
+            }
+            else if (includeGunRoom && room.transform.position == gunRoom.transform.position)
+            {
+                newCenter = Instantiate(gunRoomCenter, room.transform.position, transform.rotation);
             }
             else
             {

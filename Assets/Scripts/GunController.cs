@@ -10,6 +10,9 @@ public class GunController : MonoBehaviour
 
     public string weaponName;
     public Sprite gunUI;
+    public int cost;
+    public Sprite shopSprite;
+
     private float shotCounter;
 
     // Start is called before the first frame update

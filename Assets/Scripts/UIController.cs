@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour
     public Text coinText;
     public GameObject deathScreen;
     public Image fadeScreen;
+    public GameObject fadeObject;
     public float fadeSpeed;
     public string newGameScene;
     public string mainMenuScene;
@@ -29,6 +30,7 @@ public class UIController : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        fadeObject.SetActive(true);
     }
 
     // Start is called before the first frame update
@@ -36,6 +38,8 @@ public class UIController : MonoBehaviour
     {
         fadeToBlack = false;
         fadeOutBlack = true;
+
+        updateWeaponUI();
     }
 
     // Update is called once per frame
@@ -82,5 +86,12 @@ public class UIController : MonoBehaviour
     public void Resume()
     {
         LevelManager.instance.PauseToggle();
+    }
+
+    public void updateWeaponUI()
+    {
+        PlayerController pc = PlayerController.instance;
+        UIController.instance.currentGun.sprite = pc.availableGuns[pc.currentGun].gunUI;
+        UIController.instance.currentGunText.text = pc.availableGuns[pc.currentGun].weaponName;
     }
 }

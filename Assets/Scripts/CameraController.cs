@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
 
     public bool bigMapActive;
 
-    private Transform target;
+    public Transform target;
 
     private void Awake()
     {

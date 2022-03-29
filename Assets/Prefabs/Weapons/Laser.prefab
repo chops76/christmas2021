@@ -102,6 +102,9 @@ MonoBehaviour:
   timeBetweenShots: 0.5
   weaponName: Squish Blaster
   gunUI: {fileID: -1209311266236218547, guid: f72804754a2106a4884d758772ef2a02, type: 3}
+  cost: 25
+  shopSprite: {fileID: -2384850958105000590, guid: 48d85d1ef51430e42b6aef57f02c863d,
+    type: 3}
 --- !u!1 &1430809798920923707
 GameObject:
   m_ObjectHideFlags: 0

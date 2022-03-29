@@ -9,6 +9,8 @@ public class LevelManager : MonoBehaviour
     public float waitToLoadNext = 4.0f;
     public string nextLevel;
 
+    public Transform startPoint;
+
     public int numCoins;
 
     [HideInInspector]
@@ -22,6 +24,11 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PlayerController.instance.transform.position = startPoint.position;
+        PlayerController.instance.canMove = true;
+
+        numCoins = CharacterTracker.instance.currentGold;
+        UIController.instance.coinText.text = numCoins.ToString();
         Time.timeScale = 1.0f;
     }
 
@@ -39,6 +46,11 @@ public class LevelManager : MonoBehaviour
         PlayerController.instance.canMove = false;
         UIController.instance.StartFadeToBlack();
         AudioManager.instance.PlayLevelWin();
+
+        CharacterTracker.instance.currentGold = numCoins;
+        CharacterTracker.instance.currentHealth = PlayerHealthController.instance.currentHealth;
+        CharacterTracker.instance.maxHealth = PlayerHealthController.instance.maxHealth;
+
         yield return new WaitForSeconds(waitToLoadNext);
         SceneManager.LoadScene(nextLevel);
     }

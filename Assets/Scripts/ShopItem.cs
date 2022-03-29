@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopItem : MonoBehaviour
 {
@@ -17,12 +18,25 @@ public class ShopItem : MonoBehaviour
     public int upgradeAmount;
     public int itemCost;
 
+    public GunController[] potentialGuns;
+    private GunController theGun;
+    public SpriteRenderer gunSprite;
+    public Text gunPurchaseText;
+
     private bool inBuyZone;
 
     // Start is called before the first frame update
     void Start()
     {
         inBuyZone = false;
+        if (upgradeType == UpgradeType.Weapon)
+        {
+            int selectedGun = Random.Range(0, potentialGuns.Length);
+            theGun = potentialGuns[selectedGun];
+            gunSprite.sprite = theGun.shopSprite;
+            itemCost = theGun.cost;
+            gunPurchaseText.text = theGun.weaponName + "\n - " + itemCost + " Gold -";
+        }
     }
 
     // Update is called once per frame
@@ -43,6 +57,10 @@ public class ShopItem : MonoBehaviour
                     if (upgradeType == UpgradeType.HealthUpgrade)
                     {
                         PlayerHealthController.instance.increaseMaxHealth(upgradeAmount);
+                    }
+                    if (upgradeType == UpgradeType.Weapon)
+                    {
+                        PlayerController.instance.pickupGun(theGun);
                     }
                     gameObject.SetActive(false);
                     inBuyZone = false;

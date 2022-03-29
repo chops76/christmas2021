@@ -132,3 +132,6 @@ MonoBehaviour:
   timeBetweenShots: 0.75
   weaponName: Old Reliable
   gunUI: {fileID: -1209311266236218547, guid: f72804754a2106a4884d758772ef2a02, type: 3}
+  cost: 30
+  shopSprite: {fileID: -51580551502718289, guid: 48d85d1ef51430e42b6aef57f02c863d,
+    type: 3}
